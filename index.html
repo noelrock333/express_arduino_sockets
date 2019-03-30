@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>Ejemplo Socket.io</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container theme-showcase" role="main">
+		<div class="jumbotron">
+      <h2>Firmata y Arduino</h1>
+      <p>Con este ejemplo haremos parpadear un led, lo apagaremos y prenderemos usando websockets.</p>
+      <p><label>Sensor:</label> <span id="voltage"></span></p>
+    </div>
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-3">
+        <button id="b_stop" type="button" class="btn btn-block btn-lg btn-primary">Blink</button>
+        <button id="b_off" type="button" class="btn btn-block btn-lg btn-primary">Led OFF</button>
+        <button id="b_on" type="button" class="btn btn-block btn-lg btn-primary">Led ON</button>
+      </div>
+    </div>
+    <div class="row">
+			<div class="well">
+				<br> <a href="wwww.programarfacil.com">www.programarfacil.com</a>
+				<br> <a href="https://programarfacil.com/blog/arduino-blog/arduino-via-web-con-firmata/">Entrada original</a>
+			</div>
+		</div>
+  </div>
+  <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+  <script>
+    var socket = io();
+
+    function stopBlink(){
+      socket.emit('stop');
+    }
+    function offLed(){
+      socket.emit('off');
+    }
+    function onLed(){
+      socket.emit('on');
+    }
+
+    document.getElementById('b_stop').onclick = stopBlink;
+    document.getElementById('b_off').onclick = offLed;
+    document.getElementById('b_on').onclick = onLed;
+
+    socket.on('voltage', function (msg) {
+      console.log(msg)
+      document.getElementById('voltage').innerText = msg.data;
+    });
+  </script>
+</body>
+</html>
